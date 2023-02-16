@@ -1,22 +1,21 @@
-# TreeLine
+# SlackLine
 
-<img align="left" src="treeline-logo.png" width=100>
-Finding slow input faster using Monte-Carlo Tree Search and application provided context-free grammar. 
+Finding slow input faster using mutational splicing and application provided context-free grammar. 
 
-This is a testing version of the code TreeLine (the exact code used for experimentation). We are aware that it is not
-user-friendly. However, we wanted to share the code to comply the open-source policy. The repository will change
-drastically after paper submission. We will refactor most of the code and add all the necessary documentation.
+This is a testing version of the code SlackLine (the exact code used for experimentation). We are aware that it is not
+user-friendly. The repository will change drastically after paper submission. We will refactor most of the code and
+add all the necessary documentation.
 
 ## Usage:
 
 - Build the Docker image:
 ```sh
-docker build -t treeline:latest .
+docker build -t slackline:latest .
 ```
 
 - Run a new container
 ```sh
-docker run -p 2300:2300 --name fse -it treeline /bin/bash
+docker run -p 2300:2300 --name fse -it slackline /bin/bash
 ```
 - From the container run the AFL listener for one of the target applications using the commands provided in their 
 documentation ([wf](target_apps/word-frequency/README.md), [libxml](target_apps/libxml2/README.md), 
