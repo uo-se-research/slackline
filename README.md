@@ -1,5 +1,6 @@
 # SlackLine
 
+<img align="left" src="slackline-logo.png" width=100 alt="TreeLine Logo">
 Finding slow input faster using mutational splicing and application provided context-free grammar. 
 
 This is a testing version of the code SlackLine (the exact code used for experimentation). We are aware that it is not
