@@ -11,7 +11,7 @@ add all the necessary documentation.
 
 TBA
 
-## How _TreeLine_ Works:
+## How _SlackLine_ Works:
 
 TBA
 
