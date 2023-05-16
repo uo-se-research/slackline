@@ -1,6 +1,0 @@
-# A test case for EBNF +, x+ == xx*
-S ::= (A (B C)+ D);
-A ::= 'a' ;
-B ::= 'b' ;
-C ::= 'c' ;
-D ::= 'd' ;

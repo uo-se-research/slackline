@@ -1,8 +1,0 @@
-# Comments can look like this
-/* or like this, which is useful for 'empty' rhs */
-
-<S> ::= <A> <B>* | <A>* <C>;
-<A> ::= /* empty */;
-<A> ::= 'a';
-<B> ::= 'b';
-<C> ::= 'c'*;

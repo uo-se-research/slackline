@@ -1,5 +1,0 @@
-/* Regression test - digits not unique */
-<Word_1> ::= <Word_1> <Char_1> | /* empty */;
-<Char_1> ::= <T_1> | <Space_1>;
-<T_1> ::= 't';
-<Space_1> ::= '\s';

@@ -1,4 +1,0 @@
-# Test character ranges
-S ::= T+ ;
-T ::= "<" [a-dP-R]+ ">" ;
-

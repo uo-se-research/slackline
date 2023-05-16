@@ -1,5 +1,0 @@
-# A simple sequence grammar, for testing budgeting with
-# lower and upper bounds
-S ::= S c | c ;
-c ::= "x" | "y" ;
-

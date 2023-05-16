@@ -1,8 +1,0 @@
-# An example grammar with unit productions that we
-# want to factor out
-<Root> ::=  <A> <B> <C> ;
-<A> ::=  <X>;
-<X> ::= <Y>;
-<Y> ::= "a";
-<B> ::= "b";
-<C> ::= "c";

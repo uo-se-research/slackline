@@ -1,6 +1,0 @@
-/* A grammar with EBNF '?' shorthand */
-sentence ::= (A D)*;
-A ::= ('a' 'b' 'c');
-D ::= ('d' 'e' 'f')? 'g' ('h' 'i' 'j')?;
-# Error above - g looks like symbol but should be literal.
-# Clumsy handling in grammar --- let's improve it.

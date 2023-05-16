@@ -1,5 +1,0 @@
-# Multiple choices --- for testing binary_choice.py
-S ::=  A | B | C ;
-A ::= "a" | "aa" | "aaa" ;
-B ::= "b" | "bb" ;
-C ::= "c" | "cc" | "ccc" | "cccc" ;
