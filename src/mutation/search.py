@@ -10,7 +10,7 @@ from tdigest import TDigest
 from mutation.weighted_choice import Scorable, Sampler
 import mutation.mutator  as mutator
 import mutation.gen_tree as gen_tree
-import gramm.grammar
+import pygramm.grammar
 from mutation.dup_checker import History
 # import mutation.const_config as conf
 from  mutation.settings import Settings
@@ -249,7 +249,7 @@ class Search:
      """
 
 
-    def __init__(self, gram: gramm.grammar.Grammar, logdir: pathlib.Path,
+    def __init__(self, gram: pygramm.grammar.Grammar, logdir: pathlib.Path,
                  input_handler: InputHandler, frontier=SimpleFrontier):
         # Configuration choices (tune these empirically)
         self.n_seeds = 100  # Start with how many randomly generated sentences?

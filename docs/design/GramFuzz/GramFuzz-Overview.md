@@ -1,7 +1,7 @@
-# GramFuzz overview
+# SlackLine overview
 
 TreeLine overall is a project on performance fuzzing using Monte 
-Carlo methods.  GramFuzz is a branch of TreeLine in which the 
+Carlo methods.  SlackLine is a branch of TreeLine in which the 
 primary way of generating new inputs is by substituting subtrees of 
 derivation trees.  It draws ideas from at least three prior projects: 
 
@@ -19,13 +19,13 @@ derivation trees.  It draws ideas from at least three prior projects:
 Also, like much prior work, we build on AFL (with the additional 
 measurements developed by the PerfFuzz researchers). 
 
-## GramFuzz input generation 
+## SlackLine input generation 
 
 As in Nautilus, we generate derivation trees rather than strings.  A 
 derivation tree or subtree is represented by a `DTreeNode` in
 `src/mutation/gen_tree.py`.   The derivation process differs from 
 Nautilus:  We generate subtrees with length bounds (see method 
-`expand` of `DTreeNode`).   The approach used in GramFuzz, which uses a 
+`expand` of `DTreeNode`).   The approach used in SlackLine, which uses a 
 fixed point calculation to determine the _shortest_ string that can 
 be generated from any non-terminal, does not exhibit the performance 
 problems reported by Nautilus researchers for controlling the length 
@@ -36,7 +36,7 @@ merely by making inputs longer and longer.
 As in Nautilus, we maintain a collection of previously generated 
 derivation subtrees.  This is called the chunk store 
 (`chunk_store.py`) after the name of the similar collection in 
-Nautilus.  In GramFuzz the chunk store is a dict mapping 
+Nautilus.  In SlackLine the chunk store is a dict mapping 
 non-terminals to lists of subtrees.  When an input receives positive 
 feedback, the whole derivation tree is added to the frontier of the 
 search, and all subtrees of the derivation tree are added to the 

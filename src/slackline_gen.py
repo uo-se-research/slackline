@@ -16,7 +16,7 @@ def cli() -> object:
     parser = argparse.ArgumentParser("Generate a varying set of experiment parameters")
     parser.add_argument("--base", type=str, default="mutation/defaults.yaml",
                         desc="YAML file on which to base variations")
-    parser.add_argument("--dest", type=str, default="/tmp/gramfuzz",
+    parser.add_argument("--dest", type=str, default="/tmp/slackline",
                         desc="Directory in which to generate experimental settings files")
     return parser.parse_args()
 

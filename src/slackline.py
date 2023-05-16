@@ -39,10 +39,10 @@ import os
 
 import slackline_configure
 
-import gramm.llparse
+import pygramm.llparse
 import mutation.search
-from gramm.char_classes import CharClasses
-from gramm.unit_productions import UnitProductions
+from pygramm.char_classes import CharClasses
+from pygramm.unit_productions import UnitProductions
 # import mutation.search_config as search_config
 import mutation.search as search
 
@@ -64,8 +64,8 @@ import argparse
 
 SEP = ":"   # For Linux.  In MacOS you may need another character (or maybe not)
 
-def ready_grammar(f) -> gramm.grammar.Grammar:
-    gram = gramm.llparse.parse(f, len_based_size=True)
+def ready_grammar(f) -> pygramm.grammar.Grammar:
+    gram = pygramm.llparse.parse(f, len_based_size=True)
     gram.finalize()
     xform = UnitProductions(gram)
     xform.transform_all_rhs(gram)
@@ -82,6 +82,7 @@ def create_result_directory(root: str, app: str, gram_name: str) -> pathlib.Path
     """
     now = datetime.datetime.now()
     ident = f"app{SEP}{app}-gram{SEP}{gram_name}-crtime{SEP}{int(time.time())}"
+    os.mkdir(root)
     exp_path = pathlib.Path(root).joinpath(ident)
     os.mkdir(exp_path)
     list_path = exp_path.joinpath("list")

@@ -3,7 +3,7 @@ FUZZ_PORT: 2300
 #  Note that we do not configure the server here --- it must be set up separately
 #  on the FUZZ_SERVER (typically a docker container) running the instrumented application
 FRONTIER: "WeightedFrontier"
-directory: "/tmp/gramfuzz"  # Records subdirectory will be created here
+directory: "/tmp/slackline"  # Records subdirectory will be created here
 app_name: "graphviz"      # Used to label runs for a particular app
 gram_name: "parser-based" # Used to label runs (part of directory name)
 gram_file: "../target_apps/graphviz/grammars/parser-based.txt"

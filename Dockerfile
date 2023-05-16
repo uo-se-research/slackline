@@ -78,7 +78,7 @@ RUN git clone https://github.com/carolemieux/perffuzz.git
 WORKDIR /home/git/perffuzz/
 RUN git reset --hard f937f370555d0c54f2109e3b1aa5763f8defe337
 
-# Use our file before the build, the files we copy are edited versions of PerfFuzz to work with TreeLine
+# Use our file before the build, the files we copy are edited versions of PerfFuzz to work with SlackLine
 COPY resources/afl-socket.c .
 COPY resources/Makefile .
 COPY resources/afl-showmax.c .
@@ -90,8 +90,8 @@ RUN make
 
 # Copy the source of this repository (and all submodules) to build target_apps and be ready for runs
 WORKDIR /home
-RUN mkdir treeline
-WORKDIR /home/treeline
+RUN mkdir slackline
+WORKDIR /home/slackline
 COPY src ./src
 COPY docs ./docs
 
@@ -104,10 +104,10 @@ COPY resources/requirements.txt .
 RUN pip3 install -r requirements.txt
 
 # copy the target apps dir and build all the apps with AFL instrumenter
-COPY target_apps /home/treeline/target_apps
+COPY target_apps /home/slackline/target_apps
 
 # build all target apps (this will take a while)
-WORKDIR /home/treeline/target_apps
+WORKDIR /home/slackline/target_apps
 RUN sh build_targets.sh
 
 # make a result root diroctry
@@ -116,6 +116,6 @@ RUN mkdir /home/results
 # change the workdir to /home for convenience
 WORKDIR /home
 
-# ports we are exposing (2300: AFL socket). This is requiered only in case one would like to run TreeLine from a local
+# ports we are exposing (2300: AFL socket). This is requiered only in case one would like to run SlackLine from a local
 # machine while the targer-app runerer (AFL) is running on this docker container.
 EXPOSE 2300

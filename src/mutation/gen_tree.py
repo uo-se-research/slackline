@@ -8,8 +8,8 @@ and thereby come close to a re-implementation of the approach embodied
 in the Nautilus tool.
 """
 
-import gramm.grammar as grammar
-import gramm.llparse
+import pygramm.grammar as grammar
+import pygramm.llparse
 
 import random
 from typing import Optional, List

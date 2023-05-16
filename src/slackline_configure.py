@@ -22,8 +22,8 @@ log.setLevel(logging.DEBUG)
 # Todo: Simpler orientation to project root directory
 filename = inspect.getframeinfo(inspect.currentframe()).filename
 path = os.path.dirname(os.path.abspath(filename))
-mutation_dir = pathlib.Path(path).joinpath("mutation")
-default_settings = mutation_dir.joinpath("defaults.yaml")
+default_settings = pathlib.Path(path).joinpath("defaults.yaml")
+
 
 def configure() -> Settings:
     """Combines configuration files with command line arguments."""

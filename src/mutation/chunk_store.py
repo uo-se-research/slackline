@@ -5,7 +5,7 @@ Based (roughly) on the chunkstore of Nautilus grammar-based mutation tester.
 # Search path adjustment
 import context
 
-import gramm.grammar as grammar
+import pygramm.grammar as grammar
 import mutation.gen_tree as gen_tree
 import random
 from typing import Optional
