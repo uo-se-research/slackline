@@ -79,7 +79,7 @@ WORKDIR /home/git/perffuzz/
 RUN git reset --hard f937f370555d0c54f2109e3b1aa5763f8defe337
 
 # Use our file before the build, the files we copy are edited versions of PerfFuzz to work with TreeLine
-COPY resources/afl-treeline.c .
+COPY resources/afl-socket.c .
 COPY resources/Makefile .
 COPY resources/afl-showmax.c .
 COPY resources/afl-perffuzz.c ./afl-fuzz.c
@@ -110,7 +110,7 @@ COPY target_apps /home/treeline/target_apps
 WORKDIR /home/treeline/target_apps
 RUN sh build_targets.sh
 
-# make a result root diroctry (TODO: what is the for?)
+# make a result root diroctry
 RUN mkdir /home/results
 
 # change the workdir to /home for convenience

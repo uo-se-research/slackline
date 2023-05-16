@@ -1,4 +1,4 @@
-"""Generate multiple grammfuzz configuration files, for running
+"""Generate multiple slackline configuration files, for running
 a series of experiments with variations (e.g., sensitivity analysis for a variable).
 Each experiment is saved as a settings file in the specified directory.
 
@@ -23,5 +23,5 @@ def cli() -> object:
 def vary(settings: mutation.settings.Settings) -> iter[mutation.settings.Settings]:
     """Hack this generator to vary parameters in the settings object"""
     for tactic in ["SimpleFrontier", "WeightedFrontier"]:
-        for
+        pass
 

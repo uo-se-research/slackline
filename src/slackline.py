@@ -37,7 +37,7 @@ import time
 import pathlib
 import os
 
-import grammfuzz_configure
+import slackline_configure
 
 import gramm.llparse
 import mutation.search
@@ -91,7 +91,7 @@ def create_result_directory(root: str, app: str, gram_name: str) -> pathlib.Path
 
 
 def main():
-    settings = grammfuzz_configure.configure()
+    settings = slackline_configure.configure()
     mutation.search.init(settings)
     length_limit: int = settings["length"]
     gram_path = pathlib.Path(settings["gram_file"])
