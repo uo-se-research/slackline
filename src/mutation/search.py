@@ -348,9 +348,9 @@ class Search:
         """
         summary = self.full_report()
         print(summary)
-        summary_path = self.logdir.joinpath("summary.txt")
+        summary_path = self.logdir.parent.joinpath("summary.txt")
         with open(summary_path, "w") as f:
-            print(summary, file=f)
+            print(self.brief_report(), file=f)
 
     def brief_report(self) -> str:
         """

@@ -82,7 +82,8 @@ def create_result_directory(root: str, app: str, gram_name: str) -> pathlib.Path
     """
     now = datetime.datetime.now()
     ident = f"app{SEP}{app}-gram{SEP}{gram_name}-crtime{SEP}{int(time.time())}"
-    os.mkdir(root)
+    if not os.path.exists(root):
+        os.mkdir(root)
     exp_path = pathlib.Path(root).joinpath(ident)
     os.mkdir(exp_path)
     list_path = exp_path.joinpath("list")
