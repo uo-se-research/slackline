@@ -1,5 +1,5 @@
 """Configure from a combination of configuration files and command line.
-This is to be called from a main program operating at the "src" level in treeline,
+This is to be called from a main program operating at the "src" level in slackline,
 one directory up from here.
 """
 import argparse

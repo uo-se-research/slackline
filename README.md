@@ -1,6 +1,6 @@
 # SlackLine
 
-<img align="left" src="slackline-logo.png" width=100 alt="TreeLine Logo">
+<img align="left" src="slackline-logo.png" width=100 alt="SlackLine Logo">
 Finding slow input faster using mutational splicing and application provided context-free grammar. 
 
 This is a testing version of the code SlackLine (the exact code used for experimentation). We are aware that it is not
@@ -31,7 +31,7 @@ documentation ([wf](target_apps/word-frequency/README.md), [libxml](target_apps/
 [graphviz](target_apps/graphviz/README.md), [flex](target_apps/flex/README.md)).
 e.g. , 
 ```shell
-afl-socket -i /home/treeline/target_apps/graphviz/inputs/ -o /home/results/graphviz-001 -p -N 500 -d dot
+afl-socket -i /home/slackline/target_apps/graphviz/inputs/ -o /home/results/graphviz-001 -p -N 500 -d dot
 ```
 
 Run [mcts_expr](mcts_exper.py) with the configuration you want form your local machine or the `fse` container itself. 

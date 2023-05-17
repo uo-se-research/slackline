@@ -92,5 +92,5 @@ given in [libxml2 documentation](http://www.xmlsoft.org/tutorial/apb.html).
 To manually run the AFL listener on the target application you use a command similar to the one below.
 
 ```bash
-afl-treeline -i /home/treeline/target_apps/libxml2/inputs/ -o /home/results/libxml2-001 -p -N 500 -d /home/treeline/target_apps/libxml2/src/libxml2-2.9.7/xmllint @@
+afl-socket -i /home/slackline/target_apps/libxml2/inputs/ -o /home/results/libxml2-001 -p -N 500 -d /home/slackline/target_apps/libxml2/src/libxml2-2.9.7/xmllint @@
 ```

@@ -10,10 +10,10 @@
 # "<seed_location>;<app_name>;<binary_location>"
 
 declare -a benchmarks=(
-  # "libxml2/perffuzz-seeds/60/;libxml2;/home/treeline/target_apps/libxml2/src/libxml2-2.9.7/xmllint @@"
-  # "word-frequency/perffuzz-seeds/60/;wf;/home/treeline/target_apps/word-frequency/src/wf-0.41/src/wf"
+  # "libxml2/perffuzz-seeds/60/;libxml2;/home/slackline/target_apps/libxml2/src/libxml2-2.9.7/xmllint @@"
+  # "word-frequency/perffuzz-seeds/60/;wf;/home/slackline/target_apps/word-frequency/src/wf-0.41/src/wf"
   # "graphviz/perffuzz-seeds/60/;graphviz;dot"
-  # "flex/perffuzz-seeds/;flex;/home/treeline/target_apps/flex/src/flex-2.6.4/src/flex"
+  # "flex/perffuzz-seeds/;flex;/home/slackline/target_apps/flex/src/flex-2.6.4/src/flex"
   # "lunasvg/inputs;lunasvg;svg2png @@"
   )
 
@@ -48,7 +48,7 @@ do
     fi
 
     outputlocation="/home/results/app:${app_name}-budget:${budget}-dur:${duration}h-date:${date}-time:${time}-id:${id}"
-    command="afl-fuzz -i /home/treeline/target_apps/${seeds} -o ${outputlocation} -p -t ${input_timeout} -N ${budget} -d ${bin_location}"
+    command="afl-fuzz -i /home/slackline/target_apps/${seeds} -o ${outputlocation} -p -t ${input_timeout} -N ${budget} -d ${bin_location}"
     
     # inform us on what is about to run and where.
     python3 perffuzz-reporting.py m "PerfFuzz running new experiment on \`${app_name}\` for \`${duration}\` hours."

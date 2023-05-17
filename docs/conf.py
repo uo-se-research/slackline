@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../src/'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'TreeLine'
+project = 'TreeLine & SlackLine'
 copyright = '2022, Ziyad Alsaeed & Michal Young'
 author = 'Ziyad Alsaeed & Michal Young'
 

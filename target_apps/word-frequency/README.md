@@ -66,5 +66,5 @@ dummy seed input for perffuzz
 To manually run the AFL listener on the target application you use a command similar to the one below.
 
 ```bash
-afl-treeline -i /home/treeline/target_apps/word-frequency/inputs/ -o /home/results/wf-001 -p -N 60 -d /home/treeline/target_apps/word-frequency/src/wf-0.41/src/wf
+afl-socket -i /home/slackline/target_apps/word-frequency/inputs/ -o /home/results/wf-001 -p -N 60 -d /home/slackline/target_apps/word-frequency/src/wf-0.41/src/wf
 ```

@@ -154,6 +154,6 @@ fabric.properties
 # mac file
 .DS_Store
 
-# treeline proj
+# slackline proj
 logs
 *.ini

@@ -6,13 +6,13 @@ The fuzzing file (originally named `afl-fuzz.c`) as it is found in [PerfFuzz](ht
 
 The result collector file as it is given by AFL with minor changes on how to handle timeouts.
 
-# [afl-treeline](afl-socket.c)
+# [afl-socket](afl-socket.c)
 
-A compact version of the original `afl-fuzz.c` file used by TreeLine algorithm to run inputs using socket. This version removes all the fuzzing features while maintaining the well-engineered target application runner.
+A compact version of the original `afl-fuzz.c` file used by SlackLine algorithm to run inputs using socket. This version removes all the fuzzing features while maintaining the well-engineered target application runner.
 
 # [Makefile](Makefile)
 
-The same makefile that is found in PerfFuzz with a minor change to build both `afl-treeline` and `afl-fuzz` at the same time. 
+The same makefile that is found in PerfFuzz with a minor change to build both `afl-socket` and `afl-fuzz` at the same time. 
 
 # [Requirements](requierments.txt)
 

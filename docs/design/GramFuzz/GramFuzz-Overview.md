@@ -1,9 +1,10 @@
 # SlackLine overview
 
-TreeLine overall is a project on performance fuzzing using Monte 
-Carlo methods.  SlackLine is a branch of TreeLine in which the 
-primary way of generating new inputs is by substituting subtrees of 
-derivation trees.  It draws ideas from at least three prior projects: 
+[TreeLine](https://github.com/uo-se-research/treeline) overall is
+a project on performance fuzzing using Monte 
+Carlo methods.  SlackLine is a branch of [TreeLine](https://github.com/uo-se-research/treeline)
+in which the primary way of generating new inputs is by substituting
+subtrees of derivation trees. It draws ideas from at least three prior projects: 
 
 - Nautilus showed the utility of substituting previously generated 
   subtrees into derivation trees. 

@@ -143,5 +143,5 @@ dot -Tps sample.dot -o sample.ps
 To manually run the AFL listener on the target application you use a command similar to the one below.
 
 ```bash
-afl-treeline -i /home/treeline/target_apps/graphviz/inputs/ -o /home/results/graphviz-001 -p -N 500 -d dot
+afl-socket -i /home/slackline/target_apps/graphviz/inputs/ -o /home/results/graphviz-001 -p -N 500 -d dot
 ```
