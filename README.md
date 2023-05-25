@@ -9,54 +9,17 @@ add all the necessary documentation.
 
 ## Related Publication(s):
 
-TBA
+- **Finding Short Slow Inputs Faster with Grammar-Based Search** ([pre-print-copy]()). Please use the reference below when citing the paper.
+
+  > Ziyad Alsaeed and Michal Young. 2023. Finding Short Slow Inputs Faster with Grammar-Based Search. _In Proceedings of the 32nd ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA ’23), July 17–21, 2023, Seattle, WA, United States_. ACM, New York, NY, USA, 11 pages. https://doi.org/10.1145/3597926.3598118
 
 ## How _SlackLine_ Works:
 
-At this time we know of no grammar-based mutational fuzzers 
-aimed at finding performance bugs.  There are good text mutation 
-fuzzers for performance bugs (PerfFuzz) and good grammar-based
-mutational fuzzers (Nautilus), but modifying either to combine their 
-attributes is not straightforward.  
-
-### Nautilus
-
-We looked in particular at
-[Nautilus](https://github.com/nautilus-fuzz/nautilus), because in
-addition to being a very good fuzzer for its intended domain, it
-had enough in common with [TreeLine](https://github.com/uo-se-research/treeline)
-to seem an apt basis for comparison between tree search (Monte
-Carlo or otherwise) and grammar-based mutation.
-
-However, the implementation of Nautilus is in rust, and its 
-integration with an AFL++ back end (vs AFL code base for PerfFuzz 
-and TreeLine) is a shared memory area. Thus, it is very tightly 
-coupled to the in-memory data structure of the coverage structure 
-that AFL++ builds (which is probably compatible with AFL, but we 
-aren't sure). TreeLine uses additional memory structures, adopted 
-from PerfFuzz. In particular, while AFL (and AFL++, presumably) 
-buckets edge counts in a way that treats 301 and 311 as the same count
-(i.e., an execution that touches an edge 311 times is not 
-necessarily "new coverage" if the edge has previously been touched 
-301 times), PerfFuzz and TreeLine keep total counts for each edge so 
-that touching an edge more times than it has been touched before 
-(even if in the same bucket) can be treated as progress toward 
-finding expensive runs or hot spots. 
-
-We were not confident of correctly modifying Nautilus to use the 
-additional information produced by our modified AFL back-end.  In 
-addition, Nautilus has other optimizations and operations (including 
-some textual mutation with "havoc"), and a rust application with a 
-shared memory interface was not an "apples to apples" comparison 
-with a Python application communicating over sockets.  This led us 
-to borrow and reimplement key ideas from Nautilus in Python. 
-
-### Our mutator (SlackLine)
-
-Following Nautilus, our mutator can "splice" a previously generated 
+Following [Nautilus](https://github.com/nautilus-fuzz/nautilus),
+our mutator can "splice" a previously generated 
 subtree at any non-terminal in the grammar. These previously 
 generated subtrees are kept in the "chunk_store", following the 
-chunkstore structure in Nautilus.  Like Nautilus, we record 
+chunkstore structure in Nautilus. Like Nautilus, we record 
 previously generated trees (actually just hashes of the strings they 
 generate) so we don't waste time testing the same string over and over.
 
@@ -74,7 +37,12 @@ Key differences include
   tokens. But we also do not minimize inputs as Nautilus and AFL 
   do: We want strings that are pretty close to the limit.
 
-## Usage:
+## Getting Started:
+
+- Cloning this repository:
+  
+  The provided repository has submodules. Therefore, you have to
+  clone it appropriately (e.g., use the `--recurse-submodules` flag).
 
 - Build the Docker image:
 
@@ -104,7 +72,7 @@ Key differences include
 - Run the AFL listener for a target application:
 
   Using the commands provided as sample on each target application
-  README file([wf](target_apps/word-frequency/README.md), [libxml](target_apps/libxml2/README.md),
+  README file ([wf](target_apps/word-frequency/README.md), [libxml](target_apps/libxml2/README.md),
   [lunasvg](target_apps/lunasvg/README.md), [graphviz](target_apps/graphviz/README.md),
   [flex](target_apps/flex/README.md)), run the AFL listener for that target app.
   ```shell
@@ -119,14 +87,14 @@ Key differences include
 - Run _SlackLine_'s algorithm:
 
   To run the search process you have two options.
-  - **Option 1**: Run from your local machine
+  - **Option 1**: Run from your local machine.
     
     Run [slackline.py](src/slackline.py) with the configuration you want (see [defaults.yaml](src/defaults.yaml)) form your local machine.
     This means that you are responsible for all python's dependencies. 
     ```shell
     python3 slackline.py 
     ```
-  - **Option 2**: Use the same container to run the _SlackLine_
+  - **Option 2**: Use the same container to run the [slackline.py](src/slackline.py).
     
     Open another bash screen on the same container you have up and running.
     ```shell
@@ -136,8 +104,11 @@ Key differences include
     ```shell
     python3 slackline.py
     ```
+    
+  Note that the [defaults.yaml](src/defaults.yaml) configuration files is set to run GraphViz
+  for one hour. You should change the configurations according to your run goal.   
 
-## Sample Output:
+## Detailed Description of a Sample Outputs::
 
 A five seconds run on GraphViz, could generate something similar to the directory list in the sample below
 (default `/tmp/slackline/<experiment-id>`).
@@ -211,7 +182,43 @@ It briefly describes the characteristics of the search attempt.
   ---
 ```
 
+## Extending _SlackLine_:
+
+_SlackLine_ (and its companion _TreeLine_), are built modularly, allowing for a complete change in the search strategy.
+The basic functionalities like running inputs and reading and annotating grammar are in separate modules. One can
+either extend the search strategy of _SlackLine_ or replace _SlackLine_ as a whole.
+
+<p align="center"><img src="img/overview-modules.png" alt="Modules Overview"/></p>
+
+
 ## Dependencies:
 
 All the dependencies are managed by the docker file provided. However, a major requirements for building and running
-_SlackLine_ is to build it on x86 processor. This is required for AFL's instrumentation to work. 
+_SlackLine_ is to build it on x86 processor. This is required for AFL's instrumentation to work.
+
+## Known Issues:
+
+- **Cores of Linux as a host**:
+  
+  If you host the docker image on a Linux distribution, make sure `core_pattern` is set to `core` in the host machine,
+  as given in the command below.
+
+  ```shell
+  sudo sysctl -w kernel.core_pattern="core"
+  ```
+
+  Otherwise, AFL will complain with an error similar to the one below. 
+
+  ```shell
+  [*] Checking core_pattern...
+  
+  [-] Hmm, your system is configured to send core dump notifications to an
+      external utility. This will cause issues: there will be an extended delay
+      between stumbling upon a crash and having this information relayed to the
+      fuzzer via the standard waitpid() API.
+  
+      To avoid having crashes misinterpreted as timeouts, please log in as root
+      and temporarily modify /proc/sys/kernel/core_pattern, like so:
+  
+      echo core >/proc/sys/kernel/core_pattern
+  ```
