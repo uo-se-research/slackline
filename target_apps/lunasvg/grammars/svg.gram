@@ -1,0 +1,108 @@
+# Partial SVG grammar for testing LunaSVG.  We focus on paths.
+# Based on W3C Editor's Draft, https://www.w3.org/TR/SVG/paths.html#PathElement
+# July 2022
+
+SVG ::= '<svg>' Paths '</svg>' ;
+
+# The "Paths" production is not from the W3C draft
+Paths ::= ('<path d="' svg_path '"'  StrokeFill?  "/>")*  ;
+StrokeFill ::=   ' fill="red" stroke="blue"' ;
+
+
+# Path grammar is transcribed from section 9.3.9 of W3C Editor's Draft,
+# lightly edited to fit our EBNF (e.g., adding semicolons), and with the lexical elements
+# (chiefly numbers) reduced to a finite set of possible values.
+#
+svg_path::= wsp* moveto? (moveto drawto_command*)? ;
+
+drawto_command::=
+    moveto
+    | closepath
+    | lineto
+    | horizontal_lineto
+    | vertical_lineto
+    | curveto
+    | smooth_curveto
+    | quadratic_bezier_curveto
+    | smooth_quadratic_bezier_curveto
+    | elliptical_arc
+    ;
+
+moveto::=
+    ( "M" | "m" ) wsp* coordinate_pair_sequence ;
+
+closepath::=
+    ("Z" | "z") ;
+
+lineto::=
+    ("L"|"l") wsp* coordinate_pair_sequence ;
+
+horizontal_lineto::=
+    ("H"|"h") wsp* coordinate_sequence ;
+
+vertical_lineto::=
+    ("V"|"v") wsp* coordinate_sequence ;
+
+curveto::=
+    ("C"|"c") wsp* curveto_coordinate_sequence ;
+
+curveto_coordinate_sequence::=
+    coordinate_pair_triplet
+    | (coordinate_pair_triplet comma_wsp? curveto_coordinate_sequence) ;
+
+smooth_curveto::=
+    ("S"|"s") wsp* smooth_curveto_coordinate_sequence ;
+
+smooth_curveto_coordinate_sequence::=
+    coordinate_pair_double
+    | (coordinate_pair_double comma_wsp? smooth_curveto_coordinate_sequence) ;
+
+quadratic_bezier_curveto::=
+    ("Q"|"q") wsp* quadratic_bezier_curveto_coordinate_sequence ;
+
+quadratic_bezier_curveto_coordinate_sequence::=
+    coordinate_pair_double
+    | (coordinate_pair_double comma_wsp? quadratic_bezier_curveto_coordinate_sequence) ;
+
+smooth_quadratic_bezier_curveto::=
+    ("T"|"t") wsp* coordinate_pair_sequence ;
+
+elliptical_arc::=
+    ( "A" | "a" ) wsp* elliptical_arc_argument_sequence ;
+
+elliptical_arc_argument_sequence::=
+    elliptical_arc_argument
+    | (elliptical_arc_argument comma_wsp? elliptical_arc_argument_sequence) ;
+
+elliptical_arc_argument::=
+    number comma_wsp? number comma_wsp? number comma_wsp
+    flag comma_wsp? flag comma_wsp? coordinate_pair ;
+
+coordinate_pair_double::=
+    coordinate_pair comma_wsp? coordinate_pair ;
+
+coordinate_pair_triplet::=
+    coordinate_pair comma_wsp? coordinate_pair comma_wsp? coordinate_pair ;
+
+coordinate_pair_sequence::=
+    coordinate_pair | (coordinate_pair comma_wsp coordinate_pair_sequence) ;
+
+# coordinate sequence modified to make comma_wsp a mandatory separator
+coordinate_sequence::=
+    coordinate | (coordinate comma_wsp coordinate_sequence) ;
+
+# Made comma_wsp mandatory
+coordinate_pair::= coordinate comma_wsp coordinate ;
+
+coordinate::= sign? number ;
+
+sign::= "+"|"-" ;
+# Maybe reduce numbers to a finite set of representatives later,
+# but for now we'll let it probe digit sequences.
+number ::= ([0-9])+ ;
+flag::=("0"|"1") ;
+comma_wsp::=(wsp+ ","? wsp*) | ("," wsp*) ;
+# Reduce whitespace alternatives as we are exploring
+# semantically relevant choices, not parsing.
+# wsp ::= (#x9 | #x20 | #xA | #xC | #xD)
+wsp ::= " " ;
