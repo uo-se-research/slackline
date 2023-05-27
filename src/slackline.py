@@ -24,7 +24,7 @@ Other differences and possible differences from Nautilus:
     - The input grammars are more restrictive.  Nautilus supports Python scripts in place of CFG constructs.
     We support standard context-free grammars (though specified in an extended BNF).
     - When we cannot find a suitable splice, we result to generating a new random subtree
-    - We have not carefully studied Natilus's tactics for managing the "interesting" trees,
+    - We have not carefully studied Nautilus's tactics for managing the "interesting" trees,
     and have probably not replicated it precisely.  Our breadth-first search is based
     more on AFL, which simply iterates through all previously found "good" trees.
     (However we winnow similarly to Nautilus, periodically discarding inputs whose virtue
@@ -32,37 +32,31 @@ Other differences and possible differences from Nautilus:
     then other retained inputs cover the same behavior.)
 """
 
-import datetime
-import time
-import pathlib
 import os
+import time
+import datetime
+import pathlib
+import argparse
 
-import slackline_configure
 
+import slack
 import pygramm.llparse
 import mutation.search
+import mutation.search as search
+import slackline_configure
 from pygramm.char_classes import CharClasses
 from pygramm.unit_productions import UnitProductions
-# import mutation.search_config as search_config
-import mutation.search as search
-
 from targetAppConnect import InputHandler    # REAL
+
 
 import logging
 logging.basicConfig()
 log = logging.getLogger(__name__)
 log.setLevel(logging.WARN)
 
-import slack
 
-import logging
-logging.basicConfig()
-log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
+SEP = ":"   # For Linux.  In macOS, you may need another character (or maybe not)
 
-import argparse
-
-SEP = ":"   # For Linux.  In MacOS you may need another character (or maybe not)
 
 def ready_grammar(f) -> pygramm.grammar.Grammar:
     gram = pygramm.llparse.parse(f, len_based_size=True)
@@ -72,7 +66,6 @@ def ready_grammar(f) -> pygramm.grammar.Grammar:
     xform = CharClasses(gram)
     xform.transform_all_rhs(gram)
     return gram
-
 
 
 def create_result_directory(root: str, app: str, gram_name: str) -> pathlib.Path:

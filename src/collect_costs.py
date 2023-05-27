@@ -1,3 +1,19 @@
+__author__ = "Ziyad Alsaeed"
+__email__ = "zalsaeed@cs.uoregon.edu"
+__status__ = "Testing"
+
+"""
+A helper script to collect the cost of experiment(s) and save them
+to an easy to process CSV file.
+
+It is important to know that this could be expensive in terms of time. 
+The script will run each input 3-times collecting all possible information. 
+And if the majority of the inputs are timing out, then each run will spend
+the timeout duration x 3. 
+
+TODO: replace this script with the inputs name parser script.  
+"""
+
 import os
 import argparse
 from collections import defaultdict

@@ -71,10 +71,11 @@ def cli() -> object:
                         action="store_true")
     parser.add_argument("--search",
                         help="bfs (breadth-first) or mcw (monte-carlo weighted)",
-                        choices = ["bfs", "mcw"])
+                        choices=["bfs", "mcw"])
     parser.add_argument("--config", help="Base configuration file",
                         type=argparse.FileType("r"))
     return parser.parse_args()
+
 
 def class_representer(dumper, data) -> str:
     """Experimental: Translate frontier classes back to string designations"""
@@ -86,13 +87,13 @@ def class_representer(dumper, data) -> str:
         return f"Class {data}"
 
 
-
 def main():
-    """Dummy main to check the behavior of configuation"""
+    """Dummy main to check the behavior of configuration"""
     config = configure()
     log.debug(f"config['FRONTIER'] is {config['FRONTIER']}, type {type(config['FRONTIER'])}")
     yaml.add_representer(type(config["FRONTIER"]), class_representer)
     print(config.dump_yaml())
+
 
 if __name__ == "__main__":
     main()

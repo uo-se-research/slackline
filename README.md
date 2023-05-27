@@ -175,7 +175,7 @@ strict digraph 5{q,i:s,b->_:_,7:nwq,D:s,b,z:s,8,_:s,b,6:s}
 ```
 
 In addition, here is a sample of the **summary.txt** file content.
-It briefly describes the characteristics of the search attempt.  
+It briefly describes the characteristics of the search attempt.
 
 ```text
   *** Summary of search ***
@@ -199,6 +199,31 @@ It briefly describes the characteristics of the search attempt.
   193 (41.7%) progress from splicing
   58 (40.3%) progress from random subtree generation
   ---
+```
+
+### Collecting Cost in CSV File
+
+To collect the all the inputs information in an easy to handle CSV file, you could use the
+[collect_costs.py](src/collect_costs.py) script. The script provides an easy-to-use bulk
+data collection process. However, be aware that it could take a long time if the majority
+of the inputs are expensive (timing out). To run the script you only need to specify the
+directory where the experiment(s) are saved and the location to the instrumented binary
+file. For our example, it could look like this. 
+
+```shell
+python3 collect_costs.py /tmp/slackline/ dot
+```
+
+The results will be saved to the same directory, and it will be similar to the CSV sample
+below.
+
+```csv
+id,exec,crtime,dur,mtime(seconds),size(byte),cost,hotspot,coverage
+000001,00000000001,1685176283422,0000000062,1685176283.422196,28,63048,1806,3937
+000002,00000000002,1685176283443,0000000083,1685176283.4431958,21,51421,1806,2426
+000003,00000000003,1685176283449,0000000089,1685176283.448196,21,51455,1806,2435
+000004,00000000004,1685176283453,0000000093,1685176283.454196,29,51519,1806,2439
+...
 ```
 
 ## Extending _SlackLine_:

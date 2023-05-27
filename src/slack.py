@@ -1,3 +1,7 @@
+__author__ = "Ziyad Alsaeed"
+__email__ = "zalsaeed@cs.uoregon.edu"
+__status__ = "Testing"
+
 import requests
 import json
 import logging
@@ -29,7 +33,8 @@ credentials.ini file under a section named "DEFAULT". Here are the details of th
         users.profile:read, users:read, users:write]
 
 When in doubt try it externally using curl
->>> curl -F content="Hello" -F channels=CHANNEL -F filename=test.txt -F token=YOUR-TOKEN  https://slack.com/api/files.upload
+>>> curl -F content="Hello" -F channels=CHANNEL -F filename=test.txt -F token=YOUR-TOKEN 
+    https://slack.com/api/files.upload
 """
 config = configparser.ConfigParser()
 try:
