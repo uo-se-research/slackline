@@ -4,7 +4,6 @@ __status__ = "Testing"
 
 import collections
 import os
-import re
 import sys
 import math
 import datetime
@@ -13,9 +12,6 @@ from typing import List, Iterable, Callable
 
 import pandas as pd
 import numpy as np
-
-from pygramm.grammar import RHSItem
-from mcts.mctsnode import MCTSNode
 
 
 def progress_bar(is_time_based: bool, start_time: datetime, iter_counter: int, num_rollouts: int,
@@ -201,8 +197,19 @@ def prep_expr_for_showmax(root_path: str, expr_dir: List[str]):
         root_path = root_path[:-1]
     expr_id = 1
     for expr in sorted(expr_dir):
-        inputs_dir = 'queue' if os.path.exists(root_path + f'/{expr}' + '/queue') else 'buffer'
-        technique = 'tool:PerfFuzz' if inputs_dir == 'queue' else 'tool:TreeLine'
+        if os.path.exists(root_path + f'/{expr}' + '/queue'):
+            inputs_dir = 'queue'
+            technique = 'tool:PerfFuzz'
+        elif os.path.exists(root_path + f'/{expr}' + '/buffer'):
+            inputs_dir = 'buffer'
+            technique = 'tool:TreeLine'
+        elif os.path.exists(root_path + f'/{expr}' + '/list'):
+            inputs_dir = 'list'
+            technique = 'tool:SlackLine'
+        else:
+            raise RuntimeError(f"Cannot find queue/buffer/list in {root_path}/{expr}")
+        # inputs_dir = 'queue' if os.path.exists(root_path + f'/{expr}' + '/queue') else 'buffer'
+        # technique = 'tool:PerfFuzz' if inputs_dir == 'queue' else 'tool:TreeLine'
 
         # create a dir for this expr and a nested dir for inputs at the same time
         try:
@@ -233,7 +240,11 @@ def prep_expr_for_showmax(root_path: str, expr_dir: List[str]):
             # break by indicators and their values
             if base_name.endswith(','):
                 base_name = base_name[:-1]
-            indicators = base_name.split(',')
+
+            if technique == 'tool:SlackLine':
+                indicators = base_name.split('-')
+            else:
+                indicators = base_name.split(',')
 
             # checking if we should skip an input because it is an orig
             skip_this_input = False
@@ -274,7 +285,7 @@ def prep_expr_for_showmax(root_path: str, expr_dir: List[str]):
         expr_id += 1
 
 
-def remove_suffix(file_name: str, possible_suffixes=('+max', '+cov', '+cost')) -> str:
+def remove_suffix(file_name: str, possible_suffixes=('+max', '+cov', '+cost', '+quant')) -> str:
     """Helper function to remove the suffixes added to the input files names.
 
     :param file_name: The file name with the undesired suffix.
@@ -362,138 +373,6 @@ def find_prc_uniq_values(data: List[int]) -> float:
         return len(np.unique(data)) / len(data)
     else:
         return 0.0  # special case
-
-
-def tree_state(node: MCTSNode) -> str:
-    """Tree printing helper method.
-
-    :param node: The root node from which we would like to start the printing process.
-    """
-    indent = "    "
-    tree = ''
-    tree += f"{node.level*indent}{node}\n"
-    for child in node.get_children():
-        tree += tree_state(child)
-    return tree
-
-
-def tree_to_dot(node: MCTSNode) -> str:
-    """Generate a tree written in a dot language for post-print rendering. The method works for the target
-    applications we tried. However, there is no guarantee that it would work for all target applications as the
-    depending on the applications' language it can interfere with the dot code.
-
-    :param node: The root node from which we would print the tree.
-    :return: The dot file as a string.
-    """
-    # open the graph and add high-level attributes
-    dot_rep = "digraph {\n"
-    dot_rep += "\tnode [shape=record, colorscheme=rdylbu11];\n"
-
-    # add graph nodes based on tree (body)
-    dot_rep += node_to_struct(node, True)
-
-    # add the legend and close the whole graph
-    dot_rep += "\tsubgraph cluster_key {\n"
-    dot_rep += "\t\trank=sink;\n"
-    dot_rep += "\t\tstyle = filled;\n"
-    dot_rep += "\t\tcolor=lightgrey;\n"
-    dot_rep += "\t\tlabel=\"Legend\";\n"
-    dot_rep += "\t\tdetails [label=\"{Generated input\\n'' means empty|len(input)= length \\nof generated input|" \
-               "# used tokens = total terminal token \\nused to generated the shown input \\nwhich must never " \
-               "exceed the budget}|" \
-               "SYMBOL\\nunder evaluation|" \
-               "{AB= Allowed Budget|PB= Passed Budget|len(s)= Stack Size}|" \
-               "STACK|" \
-               "{V= Total Costs (sum) based on \\nany descendant of this node|N= No. of Visits|UCB= UCB value to " \
-               "reach \\nthis node from parent}" \
-               "}\"];\n"
-    dot_rep += "\t\tbest_intermediate [label=\"Intermediate Node in Best Path\"; style=filled; fillcolor=8]\n"
-    dot_rep += "\t\tbest_leaf [label=\"Leaf Node in Best Path\"; style=filled; fillcolor=7]\n"
-    dot_rep += "\t\tbest_terminal [label=\"Terminal Node in Best Path\"; style=filled; fontcolor=white; " \
-               "fillcolor=9]\n"
-    dot_rep += "\t\tintermediate [label=\"Intermediate Node\"; style=filled; fillcolor=4]\n"
-    dot_rep += "\t\tleaf [label=\"Leaf Node\"; style=filled; fillcolor=5]\n"
-    dot_rep += "\t\tterminal [label=\"Terminal Node\"; style=filled; fillcolor=3]\n"
-    dot_rep += "\t}\n"
-    dot_rep += "}\n"
-
-    return dot_rep
-
-
-def node_to_struct(node: MCTSNode, is_best: bool) -> str:
-
-    if node.locked:
-        dot_struct = f"\tstruct{id(node)} [style=filled; fontcolor=white; fillcolor=black; label=\""
-    elif is_best:  # blue background
-        if node.is_terminal():
-            dot_struct = f"\tstruct{id(node)} [style=filled; fontcolor=white; fillcolor=9; label=\""
-        elif node.is_leaf():
-            dot_struct = f"\tstruct{id(node)} [style=filled; fillcolor=7; label=\""
-        else:
-            dot_struct = f"\tstruct{id(node)} [style=filled; fillcolor=8; label=\""
-    else:  # gold background
-        if node.is_terminal():
-            dot_struct = f"\tstruct{id(node)} [style=filled; fillcolor=3; label=\""
-        elif node.is_leaf():
-            dot_struct = f"\tstruct{id(node)} [style=filled; fillcolor=5; label=\""
-        else:
-            dot_struct = f"\tstruct{id(node)} [style=filled; fillcolor=4; label=\""
-
-    # input and len of input
-    # escape all characters except the ones specified below, because they could be graphviz chars.
-    dot_struct += "{'" + re.sub("([^a-zA-Z0-9])", r"\\\1", node.text) + "'| "
-    dot_struct += f" len(input): {len(node.text)}|# used tokens: {node.tokens_used}"
-    dot_struct += "}|"
-
-    # symbol in hand
-    if isinstance(node.symbol, RHSItem):
-        # escape all characters except the ones specified below
-        dot_struct += re.sub("([^a-zA-Z0-9])", r"\\\1", node.symbol.__str__()) + "|"
-    else:
-        dot_struct += f"{node.symbol}|"
-
-    # budget and stack information
-    dot_struct += "{"
-    dot_struct += f"AB: {node.allowed_budget}|PB:{node.budget}|len(s):{len(node.stack)}"
-    dot_struct += "}|"
-
-    # stack content
-    reversed_stack = node.stack[::-1]
-    dot_struct += "{"
-    if reversed_stack:
-        for item in reversed_stack:
-            # escape all characters except the ones specified below
-            dot_struct += re.sub("([^a-zA-Z0-9])", r"\\\1", item.__str__()) + "|"
-        dot_struct = dot_struct[:-1]  # removing the last char "|" in the string.
-    else:
-        dot_struct += f"EMPTY\\nSTACK"
-    dot_struct += "}|"
-
-    # MCTS information (V, N, UCB)
-    dot_struct += "{"
-    dot_struct += f"V: {node.get_total_cost()}|N: {node.get_visits()}| UCB1: {node.get_ucb1()}"
-    dot_struct += "}\"];\n"
-
-    if node.get_children() and is_best:  # if it has children, and it is in the best path, then get the max child
-        max_child = max(node.get_children(), key=lambda n: n.get_ucb1())
-        max_ucb = max_child.get_ucb1()  # get the best child ucb1 value for coloring
-    else:
-        max_ucb = -1.0
-
-    for child in node.get_children():
-        if child.get_ucb1() == max_ucb:
-            dot_struct += node_to_struct(child, True)
-        else:
-            dot_struct += node_to_struct(child, False)
-        dot_struct += f"\tstruct{id(node)} -> struct{id(child)} "
-        c = scale_to_range(child.level, 181, 0, 1, 2)
-        if child.get_ucb1() == float("inf") or child.get_ucb1() == float("-inf"):
-            dot_struct += f"[taillabel=\"C={round(c, 2)}, UCB={round(child.get_ucb1(), 4)}, " \
-                          f"level={child.level}\"; penwidth={0.5}];\n"
-        else:
-            dot_struct += f"[taillabel=\"C={round(c, 2)}, UCB={round(child.get_ucb1(), 4)}, " \
-                          f"level={child.level}\"; penwidth={round(child.get_ucb1(), 4)}];\n"
-    return dot_struct
 
 
 def save_input(generated_input: str, hnb: bool, hnm: bool, hnc: bool, hs: int, ac: int, tokens_used: int,

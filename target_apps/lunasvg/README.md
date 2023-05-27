@@ -84,5 +84,5 @@ The output will a png file of the passed file.
 To manually run the AFL listener on the target application you use a command similar to the one below.
 
 ```bash
-afl-socket -i /home/treeline/target_apps/lunasvg/inputs -o /home/results/lunasvg-001 -p -N 60 -d svg2png @@
+afl-socket -i /home/slackline/target_apps/lunasvg/inputs -o /home/results/lunasvg-001 -p -N 60 -d svg2png @@
 ```

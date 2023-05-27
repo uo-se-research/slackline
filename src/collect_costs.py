@@ -23,7 +23,8 @@ if __name__ == "__main__":
     if not os.path.isdir(args.dir):
         raise RuntimeError(f'The path given in dir "{args.dir}" is not a directory')
     single_expr = False
-    if os.path.exists(args.dir + '/queue') or os.path.exists(args.dir + '/buffer'):
+    if os.path.exists(args.dir + '/queue') or os.path.exists(args.dir + '/buffer')\
+            or os.path.exists(args.dir + '/list'):
         expr_dir = [os.path.dirname(args.dir).split('/')[-1]]
         args.dir = os.path.join(os.path.dirname(os.path.dirname(args.dir)))  # parent dir
         single_expr = True
@@ -32,7 +33,8 @@ if __name__ == "__main__":
         sub_dir = [f.name for f in os.scandir(args.dir) if f.is_dir()]
         expr_dir = []  # expr sub-dir only
         for d in sub_dir:
-            if os.path.exists(args.dir + f'/{d}' + '/queue') or os.path.exists(args.dir + f'/{d}' + '/buffer'):
+            if os.path.exists(args.dir + f'/{d}' + '/queue') or os.path.exists(args.dir + f'/{d}' + '/buffer') \
+                    or os.path.exists(args.dir + f'/{d}' + '/list'):
                 expr_dir.append(d)
     if not expr_dir:
         raise RuntimeError(f"Could not find queue/buffer dir in {args.dir} or any of its sub-directories.")

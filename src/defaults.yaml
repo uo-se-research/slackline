@@ -8,7 +8,7 @@ app_name: "graphviz"      # Used to label runs for a particular app
 gram_name: "parser-based" # Used to label runs (part of directory name)
 gram_file: "../target_apps/graphviz/grammars/parser-based.txt"
 length: 60         # Bound on generated input length
-seconds: 10
+seconds: 3600
 # Run the experiment this long  (60= 1 minute trial, 3600= 1 hour experiment)
 runs: 1            # Possible repetitions
 tokens: False      # Count tokens rather than characters.  Better but not a fair comparison.
