@@ -11,6 +11,7 @@ import mutation.settings
 
 import argparse
 
+
 def cli() -> object:
     """Command line interface"""
     parser = argparse.ArgumentParser("Generate a varying set of experiment parameters")
@@ -20,8 +21,8 @@ def cli() -> object:
                         desc="Directory in which to generate experimental settings files")
     return parser.parse_args()
 
+
 def vary(settings: mutation.settings.Settings) -> iter[mutation.settings.Settings]:
     """Hack this generator to vary parameters in the settings object"""
     for tactic in ["SimpleFrontier", "WeightedFrontier"]:
         pass
-

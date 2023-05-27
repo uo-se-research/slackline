@@ -15,6 +15,7 @@ logging.basicConfig()
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
+
 class Chunk:
     """Record of a previously generated subtree, with attributes we can
     use to select or reject it when we are splicing into another tree.
@@ -82,14 +83,13 @@ class Chunkstore:
         self.seen_chunks[sig] = chunk
         self.chunks[hd].append(chunk)
 
-
     def get_sub(self, t: gen_tree.DTreeNode, max_len: int) -> Optional[gen_tree.DTreeNode]:
         """Fetch a potential and distinct substitute to be spliced in place of t,
         subject to a length constraint.  May return None if a good substitute
         cannot be found quickly.
         """
         if t.head not in self.chunks:
-            return  None # Failed, never seen this symbol before
+            return None  # Failed, never seen this symbol before
         sig = hash(str(t))
         candidates = []
         for sub in self.chunks[t.head]:
@@ -106,7 +106,7 @@ class Chunkstore:
         each place it can hit a dead end.
         """
         if t.head not in self.chunks:
-            return  f"There are no chunks indexed by {t.head}"
+            return f"There are no chunks indexed by {t.head}"
         sig = hash(str(t))
         excuses: list(str) = []
         for sub in self.chunks[t.head]:
@@ -117,5 +117,3 @@ class Chunkstore:
             else:
                 return "What?  '{sub}' should have worked!"
             return "\n".join(excuses)
-
-

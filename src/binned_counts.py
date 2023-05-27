@@ -1,6 +1,7 @@
 """Logarithmically scaled integer bins for counts"""
 
-class LgBins():
+
+class LgBins:
     """Binned counts, log2 scaled, accommodates values up to 2^63"""
     def __init__(self):
         """bins, total, count, maximum, last_bin are public read-only attributes."""
@@ -26,8 +27,3 @@ class LgBins():
 
     def mean(self) -> float:
         return self.total / self.count
-
-
-
-
-

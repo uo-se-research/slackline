@@ -8,12 +8,12 @@ import enum
 from tdigest import TDigest
 
 from mutation.weighted_choice import Scorable, Sampler
-import mutation.mutator  as mutator
+import mutation.mutator as mutator
 import mutation.gen_tree as gen_tree
 import pygramm.grammar
 from mutation.dup_checker import History
 # import mutation.const_config as conf
-from  mutation.settings import Settings
+from mutation.settings import Settings
 from targetAppConnect import InputHandler
 
 
@@ -23,15 +23,20 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
 CONFIG: Optional[Settings] = None
+
+
 def init(search_settings: Settings):
     global CONFIG
     CONFIG = search_settings["MONTE"]
+
 
 def time_ms() -> int:
     """Current time in ms"""
     return (time.time_ns() // 1_000_000)
 
+
 SEP = ":"   # For Linux.  In MacOS you may need another character (or maybe not)
+
 
 class Success(enum.Enum):
     COST = "cost"   # New maximum cost
@@ -41,20 +46,25 @@ class Success(enum.Enum):
 
 
 global_node_count = 0
+
+
 def get_serial() -> int:
     """Returns the next serial number"""
     global global_node_count
     global_node_count += 1
     return global_node_count
 
+
 # TDigest at module level so that it is accessible from Candidate
 # for scoring without passing it from Search
 quantile_digest = TDigest()
+
 
 def percent(portion: int, total: int) -> float:
     """Fraction as a percentage, rounded"""
     frac = portion / total
     return round(100 * frac, 1)
+
 
 # Experiment:  Candidate scores subclass Scorable to be
 #    compatible with weighted_choice.Sampler
@@ -64,7 +74,7 @@ class Candidate(Scorable):
     """
     def __init__(self, tree: gen_tree.DTreeNode,
                  parent: Optional["Candidate"] = None,
-                 cost: int=0, reasons: str = ""):
+                 cost: int = 0, reasons: str = ""):
         self.root = tree
         self.parent = parent
         self.children = []
@@ -109,7 +119,6 @@ class Candidate(Scorable):
         # Propagating
         self.propagate_success(value)
 
-
     def propagate_success(self, value: int):
         self.count_successful += value
         self.count_selections += 1
@@ -136,7 +145,7 @@ class Candidate(Scorable):
         frontier nodes since our very bushy tree precludes fully expanding
         a node in the "expand" step of MCTS.
         """
-        exploit = (1 + quantile_digest.cdf(self.cost)) *  self.count_successful / self.count_selections
+        exploit = (1 + quantile_digest.cdf(self.cost)) * self.count_successful / self.count_selections
         if self.parent is None:
             return exploit
         # Since we are working bottom up, the exploration component doesn't
@@ -248,7 +257,6 @@ class Search:
      all details.)
      """
 
-
     def __init__(self, gram: pygramm.grammar.Grammar, logdir: pathlib.Path,
                  input_handler: InputHandler, frontier=SimpleFrontier):
         # Configuration choices (tune these empirically)
@@ -272,7 +280,7 @@ class Search:
         self.count_hnb = 0  # How many times did we see new coverage (by AFL bucketed criterion)
         self.count_hnm = 0  # How many times did we see a max on an edge (AFL modification)
         self.count_hnc = 0  # How many times did we see a new max total cost (AFL modification)
-        self.count_quant = 0 # How many times did we keep a node because it is in top n% cost
+        self.count_quant = 0  # How many times did we keep a node because it is in top n% cost
         self.count_attempts = 0  # Attempts to create a mutant
         self.count_splices = 0  # How many times did we create a valid splice
         self.count_mutants = 0  # Total mutants created by any means (includes splices)
@@ -525,9 +533,5 @@ class Search:
                 # of them, even if we didn't modify them!
                 self.mutator.stash(mutant)
 
-
             if not found_good:
                 log.info(f"Complete cycle without generating a good mutant")
-
-
-

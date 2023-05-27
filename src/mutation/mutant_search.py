@@ -42,6 +42,7 @@ import os
 
 from typing import Optional
 
+import slack
 import gramm.llparse
 from gramm.char_classes import CharClasses
 from gramm.unit_productions import UnitProductions
@@ -51,21 +52,13 @@ import mutation.search as search
 from targetAppConnect import InputHandler    # REAL
 
 
-
 import logging
 logging.basicConfig()
 log = logging.getLogger(__name__)
 log.setLevel(logging.WARN)
 
-import slack
-
-import logging
-logging.basicConfig()
-log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
-
-
 SEP = ":"   # For Linux.  In MacOS you may need another character (or maybe not)
+
 
 def ready_grammar(f) -> gramm.grammar.Grammar:
     gram = gramm.llparse.parse(f, len_based_size=True)
@@ -98,7 +91,3 @@ def slack_message(m: str):
 
 def slack_command(c: str):
     slack.post_message_to_slack(f"```\n{c}\n```")
-
-
-
-

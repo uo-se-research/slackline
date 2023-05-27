@@ -15,6 +15,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def cli() -> object:
     """Command line interface currently has just one argument,
     the path to the directory containing a list of input files.
@@ -26,17 +27,20 @@ def cli() -> object:
     args = parser.parse_args()
     return args
 
+
 def glob_names(dir_path: pathlib.Path) -> list[str]:
     """Returns a list of file name stems
      of the expected pattern in the directory.
     """
     return [str(f.stem) for f in dir_path.glob("id:*crtime*dur*")]
 
+
 class Attr(NamedTuple):
     """Attributes extracted from file name of a logged generated input"""
     cost: int
     dur: int
     virtue: str
+
 
 AttrPat = re.compile(r"""
     id:.*
@@ -45,12 +49,14 @@ AttrPat = re.compile(r"""
     \+(?P<virtue> [a-z]+)$
     """, re.VERBOSE)
 
+
 def attributes(name: str) -> Attr:
     """Convert string file name to named tuple of attributes"""
     match = AttrPat.match(name)
     assert match, f"Oops, string {name} didn't match"
     groups = match.groupdict()
     return Attr(int(groups["cost"]), int(groups["dur"]), groups["virtue"])
+
 
 def attr_vecs(names: list[str]) -> dict[str, list]:
     """Extract attributes into parallel numpy arrays in a dict,
@@ -65,9 +71,9 @@ def attr_vecs(names: list[str]) -> dict[str, list]:
         costs.append(attr.cost)
         elapsed.append(round(attr.dur/1000, 2))
         virtues.append(attr.virtue)
-    return { "cost": np.array(costs),
-             "elapsed": np.array(elapsed),
-             "virtue": np.array(virtues)}
+    return {"cost": np.array(costs),
+            "elapsed": np.array(elapsed),
+            "virtue": np.array(virtues)}
 
 
 def main():
@@ -84,8 +90,6 @@ def main():
     prompt = input("Ready?")
     print("Plotted!")
 
+
 if __name__ == "__main__":
     main()
-
-
-

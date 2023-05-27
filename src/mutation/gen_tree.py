@@ -42,13 +42,12 @@ class DTreeNode:
     def copy(self) -> "DTreeNode":
         """Do this before mutating to avoid side effects."""
         copied = DTreeNode(self.head)
-        copied.children = [ child.copy() for child in self.children ]
+        copied.children = [child.copy() for child in self.children]
         return copied
 
     def __len__(self) -> int:
         """The length of the derived sentence"""
         return len(str(self))
-
 
     def __str__(self) -> str:
         """The derived sentence"""
@@ -98,7 +97,7 @@ class DTreeNode:
         elif isinstance(head, grammar._Choice) or isinstance(head, grammar._Kleene):
             # Just one child, which is the selected choice
             child = DTreeNode(random.choice(head.choices(budget)))
-            self.children = [ child ]
+            self.children = [child]
             child.expand(budget)
             assert len(child) <= budget, "Exceeded budget in expansion of _Choice"
         else:
@@ -124,12 +123,12 @@ class DTreeNode:
             return points
 
 
-
 def derive(g: grammar.Grammar, budget: int = 20) -> DTreeNode:
     """Returns a single random derivation"""
     tree = DTreeNode(g.start)
     tree.expand(budget=budget)
     return tree
+
 
 def cli() -> object:
     """Command line argument is path to grammar file"""
@@ -152,13 +151,13 @@ def main():
     gram.finalize()
     print(f"LR Grammar: \n{gram.dump()}")
 
-
     for fresh_trees in range(5):
         print("Fresh tree:")
         t = derive(gram, budget=length)
         # print(repr(t))
         print("=>")
         print(t)
+
 
 if __name__ == "__main__":
     main()

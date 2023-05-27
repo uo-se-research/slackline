@@ -17,6 +17,7 @@ log.setLevel(logging.DEBUG)
 # hnm, (has new max)     (bool)
 # hs  (hot spot)         (int)
 
+
 class InputHandler:
     """A stub for testing with random feedback in the host environment,
     before moving execution onto the Docker image
@@ -50,7 +51,3 @@ class InputHandler:
 
     def open_connection(self):
         return
-
-
-
-

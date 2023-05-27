@@ -30,8 +30,3 @@ and imported into search.py directly as well as mutant_search.py indirectly.
 # WEIGHT_NEWCOV = 1.0
 # WEIGHT_NEWMAX = 5.0
 # WEIGHT_NEWCOST = 10.0
-
-
-
-
-

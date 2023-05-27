@@ -27,6 +27,7 @@ be read together with Schartz' description.  I'll optimize it later if needed.
 from typing import List
 import random
 
+
 class Scorable:
     """Abstract base class: Things that have scores
     that can be used to make a weighted choice.
@@ -88,7 +89,6 @@ class Sampler:
             return self.elements[self.alias[i]]
 
 
-
 class _I:
     def __init__(self, s: str, w: float):
         self.s = s
@@ -103,14 +103,12 @@ class _I:
 
 def simple_test():
     dist = Sampler([_I("a", 8), _I("c", 1), _I("b", 4)])
-    counts = {"a": 0, "b": 0, "c":0 }
+    counts = {"a": 0, "b": 0, "c": 0}
     for i in range(1000):
         s = dist.draw().s
         counts[s] += 1
     print(counts)
 
+
 if __name__ == "__main__":
     simple_test()
-
-
-

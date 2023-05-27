@@ -8,7 +8,7 @@ December 2022:  Refactoring to separate identification of potential mutations or
   put in one place where we can measure and calibrate.
 """
 
-import mutation.gen_tree  as gen_tree
+import mutation.gen_tree as gen_tree
 import mutation.chunk_store as chunk_store
 
 import random
@@ -18,6 +18,7 @@ import logging
 logging.basicConfig()
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
+
 
 class Mutator:
     """The mutator has internal state to splice previously seen subtrees,
@@ -43,8 +44,8 @@ class Mutator:
         mutable_node: gen_tree.DTreeNode = random.choice(mutated.mutation_points())
         assert mutable_node is not None
         mutable_node.expand(len(mutable_node) + margin)
-        assert len(mutated) <= budget, (f"Exceeded budget expanding '{tree}' ({len(tree)}) to '{mutated}' ({len(mutated)})"
-                                + f"\n margin was {margin}")
+        assert len(mutated) <= budget, (f"Exceeded budget expanding '{tree}' ({len(tree)}) to '{mutated}' "
+                                        f"({len(mutated)})\n margin was {margin}")
         return mutated
 
     # Todo: Breaking one method "hybrid" which selected and applied mutations into
@@ -112,7 +113,7 @@ class Mutator:
         splice_point.sub_children(substitute.children)
         # log.debug(f"Now splice point is '{splice_point}'")
         # log.debug(f"Resulting in '{mutated}'")
-        if len(mutated) > budget: # DEBUG
+        if len(mutated) > budget:  # DEBUG
             log.error(f"Length of hybridized tree '{mutated}' is {len(mutated)}")
             log.error(f"Original tree '{tree}' had length {len(tree)}")
             log.error(f"Margin was {margin}")
@@ -176,7 +177,6 @@ def demo():
             print(f"Mutant: {mut}")
             trees.append(mut)
             stash(mut)
-
 
     print("The following chunks have been recorded")
     print(SEEN)
