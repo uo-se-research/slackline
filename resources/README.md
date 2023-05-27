@@ -16,7 +16,7 @@ The same makefile that is found in PerfFuzz with a minor change to build both `a
 
 # [Requirements](requierments.txt)
 
-All the needed python dependencies by TreLine. 
+All the needed python dependencies by TreeLine/SlackLine. 
 
 # [sources.list](sources.list)
 
