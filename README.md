@@ -3,9 +3,11 @@
 <img align="left" src="slackline-logo.png" width=100 alt="SlackLine Logo">
 Finding slow input faster using mutational splicing and application provided context-free grammar. 
 
-This is a testing version of the code _SlackLine_ (the exact code used for experimentation). We are aware that it is not
-user-friendly. The repository will change drastically after paper submission. We will refactor most of the code and
-add all the necessary documentation.
+Given an instrumented target application and grammar, SlackLine uses
+our grammar module to annotate the grammar with a cost. It then uses
+the grammar to generate derivations bound by some pre-defined
+length (budget). SlackLine uses input splicing and MCTS to drive the
+search toward more expensive inputs. 
 
 ## Related Publication(s):
 
