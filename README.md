@@ -11,9 +11,13 @@ search toward more expensive inputs.
 
 ## Related Publication(s):
 
-- **Finding Short Slow Inputs Faster with Grammar-Based Search** ([pre-print-copy]()). Please use the reference below when citing the paper.
+- **Finding Short Slow Inputs Faster with Grammar-Based Search** ([pre-print-copy](https://uo-se-research.github.io/preprints/issta23-finding-short-slow-inputs-faster.pdf)). Please use the reference below when citing the paper.
 
-  > Ziyad Alsaeed and Michal Young. 2023. Finding Short Slow Inputs Faster with Grammar-Based Search. _In Proceedings of the 32nd ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA ’23), July 17–21, 2023, Seattle, WA, United States_. ACM, New York, NY, USA, 11 pages. https://doi.org/10.1145/3597926.3598118
+  > Ziyad Alsaeed and Michal Young. 2023. Finding Short Slow Inputs Faster with Grammar-Based Search. _In Proceedings of the 32nd ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA ’23), July 17–21, 2023, Seattle, WA, USA_. ACM, New York, NY, USA, 11 pages. https://doi.org/10.1145/3597926.3598118
+
+- **TreeLine and SlackLine: Grammar-Based Performance Fuzzing on Coffee Break** ([pre-print-copy](https://uo-se-research.github.io/preprints/issta23-demo-tool-treeline-slackline.pdf)). Please use the reference below when citing the paper.
+
+  > Ziyad Alsaeed and Michal Young. 2023. TreeLine and SlackLine: Grammar-Based Performance Fuzzing on Coffee Break. _In Proceedings of the 32nd ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA ’23), July 17–21, 2023, Seattle, WA, USA_. ACM, New York, NY, USA, 4 pages. https://doi.org/10.1145/3597926.3604925
 
 ## How _SlackLine_ Works:
 
